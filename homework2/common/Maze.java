@@ -10,8 +10,6 @@ public interface Maze{
 
     List<MazeObject> ghosts();
 
-    List<MazeObject> keys();
-
     int numRows();
 
     int numCols();
