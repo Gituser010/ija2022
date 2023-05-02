@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 public class Game implements Maze {
 
+    private int numKeys;
     private int mainRows;
     private int mainCols;
     private Field[][] mainArrayF;
@@ -31,10 +32,12 @@ public class Game implements Maze {
         this.mainRows = rows;
         this.mainCols = cols;
         this.graph = new SquareGraph(rows+2,cols+2);
-
+        this.Ghosts = new ArrayList<>();
+        this.numKeys = 0;
     }
     public List<MazeObject> Ghosts;
-    public List<MazeObject> Keys;
+
+    private int fuck_keys;
 
     public PacmanObject pacman;
 
@@ -45,13 +48,14 @@ public class Game implements Maze {
         this.mainCols = cols;
         this.mainArrayF = new Field[rows+2][cols+2];
         this.Ghosts = new ArrayList<>();
-        this.Keys = new ArrayList<>();
+        this.graph = new SquareGraph(rows+2,cols+2);
+        this.numKeys = 0;
     }
 
     public Maze createGame(String[] maze, int rows, int cols) throws IOException {
         rows += 2;
         cols += 2;
-
+        int countK = 0;
 
 
         this.graph = new SquareGraph(rows,cols);
@@ -84,18 +88,18 @@ public class Game implements Maze {
                         if (maze[x - 1].charAt(y - 1) == 'S') {
                             PacmanObject P = new PacmanObject(arrayF[x][y],logger);
                             System.out.println("in here");
-                            logger.info("created " + P.hashCode() + " true " + x + " " + y);
-                            pacman=P;
+                            logger.info("created" + P.hashCode() + " true " + x + " " + y);
+                            pacman = P;
                             arrayF[x][y].put(P);
                         } else if (maze[x - 1].charAt(y - 1) == 'G') {
                             GhostObject G = new GhostObject(arrayF[x][y],logger);
-                            logger.info("created " + G.hashCode() + " false " + x + " " + y);
+                            logger.info("created" + G.hashCode() + " false " + x + " " + y);
                             arrayF[x][y].put(G);
-                            this.Ghosts.add(this.ghosts().size(),G);
+                            this.Ghosts.add(G);
                         } else if (maze[x - 1].charAt(y - 1) == 'K') {
                             KeyObject K = new KeyObject(arrayF[x][y]);
                             arrayF[x][y].put(K);
-                            this.Keys.add(this.keys().size(),K);
+                            countK++;
                         } else if (maze[x - 1].charAt(y - 1) == 'T') {
                             TargetObject T = new TargetObject(arrayF[x][y]);
                             arrayF[x][y].put(T);
@@ -104,13 +108,17 @@ public class Game implements Maze {
                 }
             }
         }
+
+        this.numKeys = countK;
         Game GameMaze = new Game(arrayF, rows, cols);
         for (int x = 0; x < rows; x++)
             for (int y = 0; y < cols; y++)
-                arrayF[x][y].setMaze(GameMaze);
+                arrayF[x][y].setMaze(GameMaze, numKeys);
+
         this.mainArrayF = arrayF;
         this.mainRows = rows;
         this.mainCols = cols;
+
         return GameMaze;
     }
 
@@ -121,9 +129,6 @@ public class Game implements Maze {
     public SquareGraph getGraph(){return this.graph;}
 
 
-    public FileHandler getFh(){
-        return fh;
-    }
     @Override
     public int numRows() {
         return this.mainRows;
@@ -137,11 +142,6 @@ public class Game implements Maze {
     @Override
     public List<MazeObject> ghosts() {
         return new ArrayList<>(this.Ghosts);
-    }
-
-    @Override
-    public List<MazeObject> keys() {
-        return new ArrayList<>(this.Keys);
     }
 
     @Override

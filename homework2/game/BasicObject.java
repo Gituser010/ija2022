@@ -11,9 +11,8 @@ import java.util.logging.Logger;
 public class BasicObject implements MazeObject {
     public Field mainF;
 
-
     public BasicObject(Field f) {
-        this.mainF=f;
+        this.mainF = f;
     }
 
     public BasicObject(Field f,FileHandler fh) {

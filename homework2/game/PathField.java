@@ -7,7 +7,6 @@ import ija.ija2022.homework2.common.AbstractObservable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
 
 public class PathField extends AbstractObservable implements Field  {
     private final int mainRow;
@@ -16,7 +15,7 @@ public class PathField extends AbstractObservable implements Field  {
     private Maze mapMaze;
     public List<MazeObject> pole;
 
-    private FileHandler fh;
+    private int numK;
 
     public PathField(int row, int col) {
         this.mapMaze = null;
@@ -31,8 +30,9 @@ public class PathField extends AbstractObservable implements Field  {
         return obj instanceof PathField && ((PathField) obj).mainCol == this.mainCol && ((PathField) obj).mainRow == this.mainRow;
     }
 
-    public void setMaze(Maze maze) {
+    public void setMaze(Maze maze, int Keys) {
         this.mapMaze = maze;
+        this.numK = Keys;
     }
 
     @Override
@@ -53,34 +53,33 @@ public class PathField extends AbstractObservable implements Field  {
 
 
     public boolean put(MazeObject object) {
-
-
         if (!this.canMove()) {
             throw new UnsupportedOperationException("Cannot put object on this type of field\n");
         }
         if (object.isPacman()) {
-            if (this.get() instanceof PacmanObject pacman) {
-                if (object.isTarget()) {
-                    if (pacman.getKeys() == mapMaze.keys().size()) {
-                        System.out.println("ahp");
-                        fh = ((Game) mapMaze).getFh();
-                        fh.close();
-                        pacman.gotTarget();
+            if (this.get() instanceof BasicObject basic) {
+                if (basic.isTarget()) {
+                    if (object.getKeys() == numK) {
+                        ((PacmanObject) object).gotTarget();
                     }
-
-                    if (object.isKey()) {
-                        pacman.gotKey();
-                    }
-                    pacman.hit();
+                }
+                if (basic.isKey()) {
+                    ((PacmanObject) object).gotKey();
+                    remove(basic);
+                }
+                if (basic.isGhost()) {
+                    ((PacmanObject) object).hit();
                 }
             }
         }
         else {
             if(this.get() instanceof GhostObject ghost) {
-                PacmanObject pacman=(PacmanObject) object;
+                PacmanObject pacman = (PacmanObject) object;
                 pacman.hit();
             }
-    }
+        }
+
+        pole.removeIf(o -> o.getClass().equals(object.getClass()));
         this.pole.add(object);
         notifyObservers();
         return true;
@@ -91,7 +90,6 @@ public class PathField extends AbstractObservable implements Field  {
         if (!this.canMove()) {
             throw new UnsupportedOperationException("Cannot remove object from this type of field\n");
         }
-
 
         if(this.contains(object)) {
             pole.remove(object);
