@@ -24,7 +24,7 @@ public class WallField implements Field {
     }
 
     @Override
-    public void setMaze(Maze maze) {
+    public void setMaze(Maze maze, int nevermind) {
         this.mazeMap = maze;
     }
 

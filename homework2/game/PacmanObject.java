@@ -18,7 +18,7 @@ public class PacmanObject extends BasicObject {
         this.lives = 3;
         this.hasKeys = 0;
         this.hasTarget = false;
-        this.logger=logger;
+        this.logger = logger;
     }
 
     public boolean isPacman () {
@@ -35,6 +35,7 @@ public class PacmanObject extends BasicObject {
     public int getKeys() {
         return this.hasKeys;
     }
+
 
     @Override
     public boolean getTarget() {

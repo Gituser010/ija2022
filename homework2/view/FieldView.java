@@ -1,11 +1,10 @@
 package ija.ija2022.homework2.view;
 
 import ija.ija2022.homework2.common.Field;
+import ija.ija2022.homework2.common.Maze;
 import ija.ija2022.homework2.common.MazeObject;
 import ija.ija2022.homework2.common.Observable;
-import ija.ija2022.homework2.view.ComponentView;
-import ija.ija2022.homework2.view.GhostView;
-import ija.ija2022.homework2.view.PacmanView;
+import ija.ija2022.homework2.MazePresenter;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -19,12 +18,21 @@ public class FieldView extends JPanel implements Observable.Observer {
     private final List<ComponentView> objects;
     private int changedModel = 0;
 
-    public FieldView(Field model) {
+    public interface FieldChangedCallback {
+        void onFieldChanged();
+    }
+
+
+    private FieldChangedCallback callback;
+
+    public FieldView(Field model, FieldChangedCallback callback) {
         this.model = model;
         this.objects = new ArrayList();
+        this.callback = callback;
         this.privUpdate();
         model.addObserver(this);
     }
+
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -38,8 +46,22 @@ public class FieldView extends JPanel implements Observable.Observer {
             this.setBackground(Color.white);
             if (!this.model.isEmpty()) {
                 MazeObject o = this.model.get();
-                ComponentView v = o.isPacman() ? new PacmanView(this, this.model.get()) : new GhostView(this, this.model.get());
-                this.objects.add(v);
+                ComponentView v;
+                if (o.isPacman()){
+                    v = new PacmanView(this, this.model.get());
+                    this.objects.add(v);
+                } else if(o.isGhost()) {
+                    v = new GhostView(this, this.model.get());
+                    this.objects.add(v);
+                } else if(o.isTarget()) {
+                    v = new TargetView(this, this.model.get());
+                    this.objects.add(v);
+
+                } else {
+                    v = new KeyView(this, this.model.get());
+                    this.objects.add(v);
+                }
+
             } else {
                 this.objects.clear();
             }
@@ -53,6 +75,10 @@ public class FieldView extends JPanel implements Observable.Observer {
     public final void update(Observable field) {
         ++this.changedModel;
         this.privUpdate();
+        // Call the callback function
+        if (this.callback != null) {
+            this.callback.onFieldChanged();
+        }
     }
 
     public int numberUpdates() {

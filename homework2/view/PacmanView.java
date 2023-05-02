@@ -4,11 +4,7 @@ import ija.ija2022.homework2.common.MazeObject;
 import ija.ija2022.homework2.view.ComponentView;
 import ija.ija2022.homework2.view.FieldView;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
 public class PacmanView implements ComponentView {
@@ -30,11 +26,8 @@ public class PacmanView implements ComponentView {
         double x = (w - diameter) / 2.0;
         double y = (h - diameter) / 2.0;
         Ellipse2D.Double ellipse = new Ellipse2D.Double(x, y, diameter, diameter);
-        g2.setColor(Color.green);
+        g2.setColor(Color.decode("#FCE205"));
         g2.fill(ellipse);
-        g2.setColor(Color.black);
-        g2.setFont(new Font("Serif", 1, 20));
-        g2.drawString("(" + this.model.getLives() + ")", (int)(x + diameter) / 2, (int)(y + diameter + 10.0) / 2 + 5);
     }
 }
 

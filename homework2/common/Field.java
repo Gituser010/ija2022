@@ -3,7 +3,7 @@ package ija.ija2022.homework2.common;
 
 public interface Field extends Observable{
 
-    void setMaze(Maze maze);
+    void setMaze(Maze maze, int Keys);
 
     boolean put(MazeObject object);
 
