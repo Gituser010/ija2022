@@ -6,14 +6,15 @@ import ija.ija2022.homework2.game.BasicObject;
 import ija.ija2022.homework2.game.Game;
 
 import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
-public class Move {
+public class Move implements UiAction {
     public boolean isPacman;
     public Field.Direction direction;
     public int objectId = 0;
     public BasicObject mazeObject =null;
-    static Dictionary<Integer,BasicObject> basicObjectsDictionary;
+    static Dictionary<Integer,BasicObject> basicObjectsDictionary = new Hashtable<>();;
 
     public Move(String line) {
 
@@ -55,5 +56,18 @@ public class Move {
         o= (BasicObject) f.get();
         basicObjectsDictionary.put(objectId,o);
         return;
+    }
+
+    @Override
+    public void run() {
+        execute();
+    }
+
+    @Override
+    public void undo() {
+        if(this.direction== Field.Direction.U)basicObjectsDictionary.get(objectId).move(Field.Direction.D);
+        if(this.direction== Field.Direction.D)basicObjectsDictionary.get(objectId).move(Field.Direction.U);
+        if(this.direction== Field.Direction.L)basicObjectsDictionary.get(objectId).move(Field.Direction.R);
+        if(this.direction== Field.Direction.R)basicObjectsDictionary.get(objectId).move(Field.Direction.L);
     }
 }

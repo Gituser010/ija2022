@@ -91,6 +91,7 @@ public class PathField extends AbstractObservable implements Field  {
             throw new UnsupportedOperationException("Cannot remove object from this type of field\n");
         }
 
+
         if(this.contains(object)) {
             pole.remove(object);
             notifyObservers();

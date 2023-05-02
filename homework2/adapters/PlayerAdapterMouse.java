@@ -18,22 +18,25 @@ public class PlayerAdapterMouse extends MouseAdapter {
     private final PacmanObject pacman;
     private final Game maze;
 
-    private boolean lock;
+    private static boolean lock=false;
 
     public PlayerAdapterMouse(PacmanObject pacman, Game maze) {
         this.pacman = pacman;
         this.maze = maze;
-        this.lock =false;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(this.lock)
+        if(PlayerAdapterMouse.lock)
         {
             return;
         }
         new Thread(() -> {
-            this.lock=true;
+            if(PlayerAdapterMouse.lock)
+            {
+                return;
+            }
+            PlayerAdapterMouse.lock=true;
             FieldView fv = (FieldView) e.getSource();
             PathField field= (PathField) fv.getField();
             int fieldCol = field.getMainCol();
@@ -52,6 +55,7 @@ public class PlayerAdapterMouse extends MouseAdapter {
 
             while (fieldCol!=pacmanCol || fieldRow!=pacmanRow) {
                 try {
+
                     System.out.println("hello");
                     for(int i=0;i< nodes.size();i++)
                     {
@@ -92,12 +96,12 @@ public class PlayerAdapterMouse extends MouseAdapter {
                         Thread.sleep(400);
                     }
                     graph.clean();
-                    this.lock=false;
+                    PlayerAdapterMouse.lock=false;
                 }
                 catch (Exception er) {
                     System.err.println(er);
-                    this.lock=false;
-                    return;
+                    graph.clean();
+                    PlayerAdapterMouse.lock=false;
                 }
                 }
         }).start();

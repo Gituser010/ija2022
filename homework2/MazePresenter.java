@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,21 +71,6 @@ public class MazePresenter {
 
         frame.getContentPane().add(content, "Center");
         frame.pack();
-        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    public void update() {
-        int lives = ((Game) maze).pacman().getLives();
-        int keys = ((Game) maze).pacman().getKeys();
-        boolean win = ((Game) maze).pacman().getTarget();
-        Llives.setText("Lives: " + lives);
-        LKeys.setText("Keys: " + keys);
-        if (lives <= 0) {
-            System.out.print("GAME OVER");
-        }
-        if (win) {
-            System.out.print("YOU WIN");
-        }
     }
 }
