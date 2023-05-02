@@ -84,12 +84,12 @@ public class Game implements Maze {
                         if (maze[x - 1].charAt(y - 1) == 'S') {
                             PacmanObject P = new PacmanObject(arrayF[x][y],logger);
                             System.out.println("in here");
-                            logger.info("created" + P.hashCode() + " true " + x + " " + y);
+                            logger.info("created " + P.hashCode() + " true " + x + " " + y);
                             pacman=P;
                             arrayF[x][y].put(P);
                         } else if (maze[x - 1].charAt(y - 1) == 'G') {
                             GhostObject G = new GhostObject(arrayF[x][y],logger);
-                            logger.info("created" + G.hashCode() + " false " + x + " " + y);
+                            logger.info("created " + G.hashCode() + " false " + x + " " + y);
                             arrayF[x][y].put(G);
                             this.Ghosts.add(this.ghosts().size(),G);
                         } else if (maze[x - 1].charAt(y - 1) == 'K') {
@@ -108,7 +108,6 @@ public class Game implements Maze {
         for (int x = 0; x < rows; x++)
             for (int y = 0; y < cols; y++)
                 arrayF[x][y].setMaze(GameMaze);
-
         this.mainArrayF = arrayF;
         this.mainRows = rows;
         this.mainCols = cols;
@@ -122,6 +121,9 @@ public class Game implements Maze {
     public SquareGraph getGraph(){return this.graph;}
 
 
+    public FileHandler getFh(){
+        return fh;
+    }
     @Override
     public int numRows() {
         return this.mainRows;

@@ -7,6 +7,7 @@ import ija.ija2022.homework2.common.AbstractObservable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
 
 public class PathField extends AbstractObservable implements Field  {
     private final int mainRow;
@@ -14,6 +15,8 @@ public class PathField extends AbstractObservable implements Field  {
     private MazeObject obj;
     private Maze mapMaze;
     public List<MazeObject> pole;
+
+    private FileHandler fh;
 
     public PathField(int row, int col) {
         this.mapMaze = null;
@@ -55,18 +58,21 @@ public class PathField extends AbstractObservable implements Field  {
         if (!this.canMove()) {
             throw new UnsupportedOperationException("Cannot put object on this type of field\n");
         }
-        if (!object.isPacman()) {
+        if (object.isPacman()) {
             if (this.get() instanceof PacmanObject pacman) {
-                 if (object.isTarget()) {
-                     if (pacman.getKeys() == mapMaze.keys().size())
-                         pacman.gotTarget();
-                    
-                }
+                if (object.isTarget()) {
+                    if (pacman.getKeys() == mapMaze.keys().size()) {
+                        System.out.println("ahp");
+                        fh = ((Game) mapMaze).getFh();
+                        fh.close();
+                        pacman.gotTarget();
+                    }
 
-                 if (object.isKey()) {
-                     pacman.gotKey();
+                    if (object.isKey()) {
+                        pacman.gotKey();
+                    }
+                    pacman.hit();
                 }
-                pacman.hit();
             }
         }
         else {

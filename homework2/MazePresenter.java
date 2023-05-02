@@ -30,6 +30,7 @@ public class MazePresenter {
             Logger.getLogger(MazePresenter.class.getName()).log(Level.SEVERE, (String)null, var2);
         }
 
+
     }
 
     private void initializeInterface() {
@@ -38,7 +39,7 @@ public class MazePresenter {
         frame.setSize(350, 400);
         frame.setPreferredSize(new Dimension(350, 400));
         frame.setResizable(false);
-        frame.addKeyListener(new PlayerAdapterAZDW(((Game)maze).pacman()));
+        frame.addKeyListener(new PlayerAdapterAZDW(((Game)maze).pacman(),(Game)maze));
         int rows = this.maze.numRows();
         int cols = this.maze.numCols();
         GridLayout layout = new GridLayout(rows, cols);
