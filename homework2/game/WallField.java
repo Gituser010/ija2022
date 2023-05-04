@@ -58,6 +58,18 @@ public class WallField implements Field {
     }
 
     @Override
+    public boolean putBack(MazeObject object) {
+        if (!this.canMove()) {
+            throw new UnsupportedOperationException("Cannot put object on this type of field\n");
+        }
+        if (this.isEmpty()) {
+            this.objectMaze = object;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean remove(MazeObject object) {
         if (!this.canMove()) {
             throw new UnsupportedOperationException("Cannot remove object from this type of field\n");
@@ -67,6 +79,11 @@ public class WallField implements Field {
         }
         this.objectMaze = null;
         return true;
+    }
+
+    @Override
+    public boolean removeBack(MazeObject object) {
+        return false;
     }
 
     @Override

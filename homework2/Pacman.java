@@ -48,8 +48,10 @@ public class Pacman {
         }        
 
 
-        MazePresenter mazePresenter = new MazePresenter(game);
-        mazePresenter.open();
+        /*MazePresenter mazePresenter = new MazePresenter(game);
+        mazePresenter.open();*/
+        ReplayPresenter replayPresenter = new ReplayPresenter(game);
+        replayPresenter.open();
 
 
     }

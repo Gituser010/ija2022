@@ -2,36 +2,30 @@ package ija.ija2022.homework2;
 
 import ija.ija2022.homework2.adapters.PlayerAdapterAZDW;
 import ija.ija2022.homework2.adapters.PlayerAdapterMouse;
-import ija.ija2022.homework2.common.MazeObject;
+import ija.ija2022.homework2.adapters.ReplayAdapter;
 import ija.ija2022.homework2.game.Game;
 
 import ija.ija2022.homework2.common.Maze;
-import ija.ija2022.homework2.game.GhostMoving;
-import ija.ija2022.homework2.game.GhostObject;
-import ija.ija2022.homework2.game.PathField;
 import ija.ija2022.homework2.view.FieldView;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
 
 import javax.swing.*;
-import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class MazePresenter {
+public class ReplayPresenter {
 
     private JLabel Llives;
     private JLabel LKeys;
 
     private final Maze maze;
 
-    public MazePresenter(Maze maze) {
-        this.maze = maze;
-    }
 
+    public ReplayPresenter(Maze maze){this.maze = maze;}
     public void open() {
         try {
             SwingUtilities.invokeAndWait(this::initializeInterface);
@@ -42,12 +36,12 @@ public class MazePresenter {
     }
 
     private void initializeInterface() {
-        JFrame frame = new JFrame("Lidl Pacman");
+        JFrame frame = new JFrame("Replay");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(600, 700);
         frame.setPreferredSize(new Dimension(600, 700));
         frame.setResizable(false);
-        frame.addKeyListener(new PlayerAdapterAZDW(((Game)maze).pacman()));
+        frame.addKeyListener(new ReplayAdapter(((Game)maze).pacman(),(Game)maze));
 
         LKeys = new JLabel("Keys: 0");
         Llives = new JLabel("Lives: "+ ((Game)maze).pacman().getLives());
@@ -69,7 +63,6 @@ public class MazePresenter {
                         update();
                     }
                 });
-                field.addMouseListener(new PlayerAdapterMouse(((Game)maze).pacman(),(Game)maze));
                 content.add(field);
             }
         }
@@ -77,8 +70,7 @@ public class MazePresenter {
         frame.getContentPane().add(content, "Center");
         frame.pack();
         frame.setVisible(true);
-        GhostMoving move = new GhostMoving((PathField) ((Game) maze).pacman().getField(),(GhostObject) maze.ghosts().get(0),(Game) maze);
-        move.start();
+
     }
     public void update() {
         int lives = ((Game) maze).pacman().getLives();
@@ -94,3 +86,4 @@ public class MazePresenter {
         }
     }
 }
+

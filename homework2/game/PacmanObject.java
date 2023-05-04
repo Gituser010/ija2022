@@ -45,13 +45,25 @@ public class PacmanObject extends BasicObject {
     public void hit () {
         this.lives -= 1;
     }
+    public void noHit(){
+        this.lives+=1;
+    }
 
     public void gotKey () {
         this.hasKeys += 1;
     }
 
+    public void notGotKey(){
+        this.hasKeys -=1;
+    }
+
     public void gotTarget () {
         this.hasTarget = true;
+    }
+
+    public void notGotTarget()
+    {
+        this.hasTarget = false;
     }
 
     @Override
@@ -73,5 +85,17 @@ public class PacmanObject extends BasicObject {
             return false;
         }
         return true;
+    }
+
+
+    @Override
+    public boolean moveBack(Field.Direction direction) {
+        System.out.println("move back");
+        Field tmp = (Field) this.mainF.nextField(direction);
+        tmp.putBack(this);
+        this.mainF.removeBack(this);
+        setField(tmp);
+
+        return  true;
     }
 }

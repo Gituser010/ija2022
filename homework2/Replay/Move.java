@@ -65,9 +65,10 @@ public class Move implements UiAction {
 
     @Override
     public void undo() {
-        if(this.direction== Field.Direction.U)basicObjectsDictionary.get(objectId).move(Field.Direction.D);
-        if(this.direction== Field.Direction.D)basicObjectsDictionary.get(objectId).move(Field.Direction.U);
-        if(this.direction== Field.Direction.L)basicObjectsDictionary.get(objectId).move(Field.Direction.R);
-        if(this.direction== Field.Direction.R)basicObjectsDictionary.get(objectId).move(Field.Direction.L);
+        System.out.println("hello");
+        if(this.direction== Field.Direction.U)basicObjectsDictionary.get(objectId).moveBack(Field.Direction.D);
+        if(this.direction== Field.Direction.D)basicObjectsDictionary.get(objectId).moveBack(Field.Direction.U);
+        if(this.direction== Field.Direction.L)basicObjectsDictionary.get(objectId).moveBack(Field.Direction.R);
+        if(this.direction== Field.Direction.R)basicObjectsDictionary.get(objectId).moveBack(Field.Direction.L);
     }
 }

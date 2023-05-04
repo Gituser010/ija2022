@@ -26,6 +26,8 @@ public interface MazeObject {
         return false;
     }
 
+    default  boolean moveBack(Field.Direction direction){return  false;}
+
     Field getField();
 
     int getLives();

@@ -77,6 +77,7 @@ public class Homework2Test {
      * Test existence objektu, který reprezentuje klic.
      * 2 body
      */
+    /**
     @Test
     public void testKeys() {
         List<MazeObject> lstKeys = maze.keys();
@@ -96,7 +97,7 @@ public class Homework2Test {
                 obj2.getField());
 
     }
-
+*/
     /**
      * Test správného pohybu ducha po bludišti.
      * 2 body

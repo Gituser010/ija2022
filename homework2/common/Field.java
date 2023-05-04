@@ -7,8 +7,11 @@ public interface Field extends Observable{
 
     boolean put(MazeObject object);
 
+    boolean putBack(MazeObject object);
+
     boolean remove(MazeObject object);
 
+    boolean removeBack(MazeObject object);
 
     Field nextField(Field.Direction dirs);
 

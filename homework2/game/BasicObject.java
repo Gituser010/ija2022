@@ -36,6 +36,11 @@ public class BasicObject implements MazeObject {
     }
 
     @Override
+    public boolean moveBack(Field.Direction direction) {
+        return false;
+    }
+
+    @Override
     public Field getField() {
         return this.mainF;
     }

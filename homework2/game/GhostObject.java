@@ -33,6 +33,14 @@ public class GhostObject extends BasicObject {
         return true;
     }
 
+    @Override
+    public boolean moveBack(Field.Direction direction) {
+        Field tmp = (Field) this.mainF.nextField(direction);
+        tmp.putBack(this);
+        this.mainF.removeBack(this);
+        return true;
+    }
+
     public boolean isGhost () {
         return true;
     }

@@ -14,6 +14,7 @@ public class PathField extends AbstractObservable implements Field  {
     private MazeObject obj;
     private Maze mapMaze;
     public List<MazeObject> pole;
+    private KeyObject key;
 
     private int numK;
 
@@ -22,6 +23,7 @@ public class PathField extends AbstractObservable implements Field  {
         this.mainRow = row;
         this.mainCol = col;
         this.obj = null;
+        this.key = null;
         this.pole = new ArrayList<>();
     }
 
@@ -53,6 +55,7 @@ public class PathField extends AbstractObservable implements Field  {
 
 
     public boolean put(MazeObject object) {
+        System.out.println(this.key);
         if (!this.canMove()) {
             throw new UnsupportedOperationException("Cannot put object on this type of field\n");
         }
@@ -73,10 +76,26 @@ public class PathField extends AbstractObservable implements Field  {
             }
         }
         else {
+            System.out.println("this one");
             if(this.get() instanceof GhostObject ghost) {
                 PacmanObject pacman = (PacmanObject) object;
                 pacman.hit();
             }
+            if(object.isKey())
+            {
+                System.out.println("key");
+                this.key=(KeyObject) object;
+            }
+        }
+        pole.removeIf(o -> o.getClass().equals(object.getClass()));
+        this.pole.add(object);
+        notifyObservers();
+        return true;
+    }
+
+    public boolean putBack(MazeObject object){
+        if (!this.canMove()) {
+            throw new UnsupportedOperationException("Cannot put object on this type of field\n");
         }
 
         pole.removeIf(o -> o.getClass().equals(object.getClass()));
@@ -93,6 +112,54 @@ public class PathField extends AbstractObservable implements Field  {
 
 
         if(this.contains(object)) {
+            System.out.println("contains");
+            pole.remove(object);
+            System.out.println(pole);
+            notifyObservers();
+            return true;
+        }
+        if (object != this.obj) {
+            notifyObservers();
+            return false;
+        }
+        notifyObservers();
+        return true;
+    }
+
+    @Override
+    public boolean removeBack(MazeObject object) {
+        if (this.contains(object)) {
+            if(object.isPacman())
+            {
+                pole.remove(object);
+
+                if(!this.pole.isEmpty())
+                {
+                 MazeObject temp =this.get();
+                 if(temp.isGhost())
+                 {
+                     ((PacmanObject) object).noHit();
+                 }
+                }
+                if(this.key!=null) {
+                    ((PacmanObject) object).notGotKey();
+                    pole.add(this.key);
+                }
+            } else if (object.isGhost()) {
+                pole.remove(object);
+                if(!this.pole.isEmpty())
+                {
+                    MazeObject temp =this.get();
+                    if(temp.isPacman())
+                    {
+                        ((PacmanObject)temp).noHit();
+                    }
+                }
+
+            }
+
+            System.out.println("contains");
+            System.out.println(pole);
             pole.remove(object);
             notifyObservers();
             return true;
@@ -101,12 +168,12 @@ public class PathField extends AbstractObservable implements Field  {
             notifyObservers();
             return false;
         }
+        System.out.println(this.key);
 
-        this.obj = null;
         notifyObservers();
         return true;
-    }
 
+    }
 
     public int getMainRow(){
         return mainRow;

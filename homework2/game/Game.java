@@ -35,7 +35,7 @@ public class Game implements Maze {
     }
     public List<MazeObject> Ghosts;
 
-    private int fuck_keys;
+    private int numKeys;
 
     public PacmanObject pacman;
 

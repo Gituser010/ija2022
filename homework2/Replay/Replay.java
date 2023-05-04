@@ -16,9 +16,10 @@ public class Replay {
     public Game maze;
     public File file;
     public int step=0;
-    private Stack<UiAction> doneMoves=new Stack<>();
+    private static Stack<UiAction> doneMoves=new Stack<>();
 
-    public List<UiAction> moves=new ArrayList<>();
+    public static  List<UiAction> moves=new ArrayList<>();
+
 
 
     public Replay(Game maze,File file){
@@ -43,25 +44,42 @@ public class Replay {
     }
 
     public void execute() throws InterruptedException {
-        for (UiAction move : moves) {
-            Thread.sleep(400);
-            move.run();
-            step++;
+        while (step < moves.size() && !Thread.currentThread().isInterrupted()) {
+            Thread. sleep(400);
+            nextStep();
+            if(Thread.interrupted())
+            {
+                return;
+            }
+        }
+    }
+
+    public void executeBackward() throws  InterruptedException{
+        while (step>0 && !Thread.currentThread().isInterrupted()) {
+            Thread. sleep(400);
+            prevStep();
+            if(Thread.interrupted())
+            {
+                return;
+            }
         }
     }
 
     public void nextStep()
     {
-        moves.get(step).run();
-        doneMoves.add(moves.get(step));
-        step++;
+        if(step<moves.size()) {
+            moves.get(step).run();
+            doneMoves.add(moves.get(step));
+            step++;
+        }
     }
 
     //how to go back
     public void prevStep()
     {
-        doneMoves.pop().undo();
-        step--;
+        if(step>0) {
+            doneMoves.pop().undo();
+            step--;
+        }
     }
-
 }

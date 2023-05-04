@@ -58,6 +58,7 @@ public class FieldView extends JPanel implements Observable.Observer {
                     this.objects.add(v);
 
                 } else {
+                    this.objects.clear();
                     v = new KeyView(this, this.model.get());
                     this.objects.add(v);
                 }
